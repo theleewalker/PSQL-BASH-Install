@@ -11,7 +11,7 @@
 # 6. Install PostgreSQL. ensuring the data files are stored in $dataFolder.
 # 7. Start the PostgreSQL service using the pg_ctl command.
 # 8. Run create_hello.sql script.
-# 9. Run '/usr/local/pgsql/bin/psql -c 'select * from hello;' -U user hello_postgres;' against newly created DB and test for succesful response.
+# 9. Run '/usr/local/pgsql/bin/psql -c 'select * from hello;' -U globus hello_postgres;' against newly created DB and test for succesful response.
 
 # Section 1 - Variable Creation
 
@@ -26,7 +26,7 @@ dfolder='/postgres/data'
 gitloc='git://git.postgresql.org/git/postgresql.git'
 # $sysuser is the system user for running PostgreSQL
 sysuser='postgres'
-# $helloscript is the sql script for creating the psql user and creating a database.
+# $helloscript is the sql script for creating the Globus user and creating a database.
 helloscript='/home/ubuntu/scripts/hello.sql'
 # $logfile is the log file for this installation.
 logfile='psqlinstall-log'
@@ -88,7 +88,7 @@ sudo -u postgres $rfolder/bin/pg_ctl -D $dfolder/db -l $dfolder/logfilePSQL star
 
 # The command to start PostgreSQL at launch is added to /etc/rc.local, again using the system user postgres.
 echo "Set PostgreSQL to launch on startup"
-echo "sudo -u postgres /postgres/bin/pg_ctl -D /postgres/data/db -l /postgres/data/logfilePSQL start" | sudo tee -a /etc/rc.local >> $logfile
+sudo sed -i '$isudo -u postgres /postgres/bin/pg_ctl -D /postgres/data/db -l /postgres/data/logfilePSQL start' /etc/rc.local >> $logfile
 
 # Section 8 - Add PostgreSQL to /etc/rc.local
 
@@ -105,17 +105,17 @@ export PATH
 EOL
 
 
-# Section 8 - hello.sql script is ran
+# Section 8 - Globus hello.sql script is ran
 
 echo "Wait for PostgreSQL to finish starting up..."
 sleep 5
 
-# The hello.sql script is ran to create the user, database, and populate the database.
-echo "Running script script"
+# The Globus script is ran to create the user, database, and populate the database.
+echo "Running Globus script"
 $rfolder/bin/psql -U postgres -f $helloscript
 
 
 # Section 9 - hello_postgres is queried
 
 echo "Querying the newly created table in the newly created database."
-/postgres/bin/psql -c 'select * from hello;' -U user hello_postgres;
+/postgres/bin/psql -c 'select * from hello;' -U globus hello_postgres;
