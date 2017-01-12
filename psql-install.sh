@@ -3,7 +3,7 @@
 # This script is for use with the DevOps Challenge of installing PostgreSQL 9.6 on to a provisioned AWS EC2 instance running Ubuntu.
 
 # This script will perform the following steps:
-# 1. Set variables such as $packages, $rfolder, $dfolder, $gitloc, $sysuser, $helloscript, and $psqlcmd
+# 1. Set variables such as $packages, $rfolder, $dfolder, $gitloc, $sysuser, and $helloscript
 # 2. Install packages based off of $packages.
 # 3. Create directory: /postgres and other required.
 # 4. Create system user 'postgres'.
@@ -27,9 +27,7 @@ gitloc='git://git.postgresql.org/git/postgresql.git'
 # $sysuser is the system user for running PostgreSQL
 sysuser='postgres'
 # $helloscript is the sql script for creating the Globus user and creating a database.
-helloscript='~/scripts/hello.sql'
-# $psqlcmd is the sql cmd that shows the content of the previously mentioned database.
-psqlcmd="/postgres/bin/psql -c 'select * from hello;' -U globus hello_postgres;"
+helloscript='/home/ubuntu/scripts/hello.sql'
 
 
 # Section 2 - Package Installation
@@ -124,4 +122,4 @@ $rfolder/bin/psql -U postgres -f $helloscript
 
 # Section 9 - hello_postgres is queried
 echo "Querying the newly created table in the newly created database."
-$psqlcmd
+/postgres/bin/psql -c 'select * from hello;' -U globus hello_postgres;
